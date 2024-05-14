@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>USERFORM</title>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <form method="post">
+        {% csrf_token %}
+        {{form|crispy}}
+        <input type='submit'class="btn btn-outline-success col-6" value="SUBMIT">
+        <input type='reset'class="btn btn-outline-warning col-6 float-end" value="RESET">
+    </form>
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

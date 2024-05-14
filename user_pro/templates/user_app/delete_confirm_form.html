@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>DELETE FORM</title>
+{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <form method="post">
+        {% csrf_token %}
+        <h3>Are you confirm to delete this record </h3>
+        <input type='submit'class="btn btn-outline-danger col-3" value="YES">
+        <a class="btn btn-outline-warning col-3 "href="{% url 'users' %}">NO</a>
+    </form>
+</div>
+{% endblock %}
