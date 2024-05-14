@@ -52,6 +52,7 @@ def password_change_view(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, "password change successfully , plz login again ....")
             return redirect('login')
     context = {"form":form}
     template_name = 'user_app/user_form.html'
