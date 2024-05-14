@@ -73,17 +73,12 @@ class UserPasswordResetForm(forms.ModelForm):
 
     def clean(self):
         attr = super().clean()
+        email = attr.get('email')
+        otp = attr.get('otp')
         ps1 = attr.get('password1')
         ps2 = attr.get('password2')
         if ps1!=ps2:
             raise ValidationError("password and confirm password dosent match")
-        return attr
-    
-    def clean(self):
-        attr = super().clean()
-        email = attr.get('email')
-        otp = attr.get('otp')
-        ps1 = attr.get('password1')
         obj1 = UserOtp.objects.filter(email=email).exists()
         if obj1:
             obj = UserOtp.objects.get(email=email)
