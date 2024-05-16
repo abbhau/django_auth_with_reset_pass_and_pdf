@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>USERFORM</title>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if messages %}
+        <ul class="messages mt-3">
+        {% for message in messages %}
+            <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        {{form|crispy}}
+        <input type='button'class="btn btn-outline-success col-6" value="SUBMIT">
+        <input type='reset'class="btn btn-outline-warning col-6 float-end" value="RESET">
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_script %}
+<script>
+    document.addEventListener("click", function(event){
+        event.preventDefault
+        let quantity = document.getElementById("id_quantity").value
+        let prize = document.getElementById('id_prize').value
+        console.log("prize", prize, "quntity", quantity)
+        document.getElementById('id_Total_Prize').value = parseInt(quantity) * parseFloat(prize)
+
+    /*function myFunction(event){
+        let quantity = event.target.value
+        let prize = document.getElementById('id_prize').value
+        console.log("prize", prize, "quntity", quantity)
+        document.getElementById('id_Total_Prize').value = parseInt(quantity) * parseFloat(prize)
+       }
+        document.getElementById('id_quantity').addEventListener('input', myFunction)
+       */
+    }
+ )
+    
+</script>
+{% endblock %}

@@ -6,8 +6,10 @@ from django.core.exceptions import ValidationError
 from .models import UserOtp
 import random
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.core.exceptions import ValidationError
+from django.template import loader
+from django.utils.html import strip_tags
 class UserForm(UserCreationForm):
     class Meta:
         model = User
@@ -31,11 +33,6 @@ class UserUpdateForm(forms.ModelForm):
         if not email.endswith("@gmail.com"):
             raise ValidationError("only @gmail.com domain allowed")
         return email
-    
-    def save(self, commit=True):
-
-        form = self
-        print("form-----",form)
 
 class UserPasswordOtpForm(forms.ModelForm):
     class Meta:
@@ -53,12 +50,29 @@ class UserPasswordOtpForm(forms.ModelForm):
                 print(ema)
             obj, created= UserOtp.objects.get_or_create(email=email, otp=otp)
             print(obj.otp, created)
-            subject = 'welcome to splendornet technologies'
-            message = f'Hi {user.first_name , user.last_name} your password reset otp is : {obj.otp}'
-            from_email = settings.EMAIL_HOST_USER
-            recipient_list = [user.email, ]
-            
-            send_mail( subject, message,  from_email , recipient_list )
+           
+            context = {
+            "otp":obj.otp,
+            "user":user
+            }
+
+            receiver_email = user.email
+            template_name = "user_app/email.html"
+            convert_to_html_content =  loader.render_to_string(
+            template_name=template_name,
+            context=context
+            )
+            plain_message = strip_tags(convert_to_html_content)
+
+            yo_send_it = send_mail(
+            subject="Password reset OTP",
+            message=plain_message,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[receiver_email,]  , # recipient_list is self explainatory
+            html_message=convert_to_html_content,
+            fail_silently=True    # Optional
+            )
+
             return email
         else:
             raise ValidationError("email does not exist")
@@ -92,6 +106,11 @@ class UserPasswordResetForm(forms.ModelForm):
                 raise ValidationError("Invalid otp")
         else:
             raise ValidationError("email does not exist")
+        
+class TotalPrize(forms.Form):
+    prize = forms.FloatField()
+    quantity = forms.IntegerField()
+    Total_Prize = forms.FloatField(widget=forms.NumberInput(attrs={"readonly":True}))
 
         
         

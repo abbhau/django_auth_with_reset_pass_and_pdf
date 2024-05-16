@@ -20,10 +20,10 @@
               <a class="nav-link active" aria-current="page" href="{% url 'users'%}">User List</a>
               <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
               {% if user.is_authenticated %}
-                <a class="nav-link" href="{% url 'logout' %}" style="padding-left: 50vw;">LOGOUT</a>
+                <a class="nav-link" href="{% url 'logout' %}" style="padding-left: 70vw;">LOGOUT</a>
                 <a class="nav-link" href="{% url 'user-password-change' %}" >CHANGE PASSWORD</a>
               {% else %}
-                <a class="nav-link active" aria-current="page" style="padding-left: 45vw;" href="{% url 'user-create'%}">SIGNUP</a>
+                <a class="nav-link active" aria-current="page" style="padding-left: 70vw;" href="{% url 'user-create'%}">SIGNUP</a>
                 <a class="nav-link" href="{% url 'login' %}">LOGIN</a>
                 <a class="nav-link" href="{% url 'user-password-reset-link' %}" >FORGET PASSWORD</a>
               {% endif %}
@@ -35,5 +35,7 @@
     {% block content%}
     {% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    {% block extra_script %}
+    {% endblock %}
 </body>
 </html>
